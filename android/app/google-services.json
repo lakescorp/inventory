@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "733171944153",
+    "project_id": "inventory-flutte",
+    "storage_bucket": "inventory-flutte.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:733171944153:android:7fd25d9b8c540c3ff00cc8",
+        "android_client_info": {
+          "package_name": "com.example.inventory"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIRwpqnBZQiGh0DjE6y0-_vhpT2ajfXec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
