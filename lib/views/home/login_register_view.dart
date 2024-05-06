@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory/views/error_message.dart';
+import 'package:inventory/error_message_dialog.dart';
 import 'package:inventory/views/home/verify_email.dart';
 
 class LoginAndRegisterView extends StatefulWidget {
@@ -19,17 +19,6 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
 
-  var _error = false;
-
-  Widget _errorMessage = ErrorMessage(
-    title: '',
-    message: '',
-    icon: Icons.error,
-    onFirstButton: () {},
-    onSecondButton: () {},
-    firstButtonName: '',
-  );
-
   @override
   void initState() {
     _email = TextEditingController();
@@ -44,17 +33,21 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
     super.dispose();
   }
 
-  void setError(Widget errorMessage) {
-    setState(() {
-      _error = true;
-      _errorMessage = errorMessage;
-    });
+  void setError(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => ErrorMessageDialog(
+        title: title,
+        message: message,
+        icon: Icons.error,
+        onFirstButton: hideError,
+        firstButtonName: 'Close',
+      ),
+    );
   }
 
   void hideError() {
-    setState(() {
-      _error = false;
-    });
+    Navigator.of(context).pop();
   }
 
   void submitButton() async {
@@ -70,16 +63,7 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
         print(userCredential);
         success = true;
       } on FirebaseAuthException catch (e) {
-        print(e);
-        setError(ErrorMessage(
-          title: 'Error on register',
-          message: e.message!,
-          icon: Icons.error, // Add the error icon here
-          onFirstButton: () {
-            hideError();
-          },
-          onSecondButton: () {}, firstButtonName: 'Close',
-        ));
+        setError('Error on register', e.message!);
       }
     } else {
       try {
@@ -88,32 +72,21 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
         print(userCredential);
         success = true;
       } on FirebaseAuthException catch (e) {
-        print(e);
-        setError(ErrorMessage(
-          title: 'Error on log in',
-          message: e.message!,
-          icon: Icons.error, // Add the error icon here
-          onFirstButton: () {
-            hideError();
-          },
-          onSecondButton: () {}, firstButtonName: 'Close',
-        ));
+        setError('Error on log in', e.message!);
       }
     }
 
-
-    if(success) homeOrVerifyEmail();
-
+    if (success) homeOrVerifyEmail();
   }
 
-  void homeOrVerifyEmail(){
-
+  void homeOrVerifyEmail() {
     final user = FirebaseAuth.instance.currentUser;
 
-    if(user?.emailVerified ?? false){
+    if (user?.emailVerified ?? false) {
       print("TODO: lAUNCH APP");
-    }else{
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const VerifyEmailView()));
+    } else {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const VerifyEmailView()));
     }
   }
 
@@ -211,7 +184,6 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
               ),
             ),
           ),
-          _error ? Center(child: _errorMessage) : const SizedBox.shrink(),
         ],
       ),
     );

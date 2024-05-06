@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory/error_message_dialog.dart';
+
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
@@ -9,6 +11,26 @@ class VerifyEmailView extends StatefulWidget {
 }
 
 class _VerifyEmailViewState extends State<VerifyEmailView> {
+
+
+
+  void setError(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => ErrorMessageDialog(
+        title: title,
+        message: message,
+        icon: Icons.email,
+        onFirstButton: hideError,
+        firstButtonName: 'Close',
+      ),
+    );
+  }
+
+  void hideError() {
+      Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +106,11 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
                 onPressed: () async {
                   await FirebaseAuth.instance.currentUser?.reload();
                   final user = FirebaseAuth.instance.currentUser;
-                  final verified = user?.emailVerified;
+                  final verified = user?.emailVerified ?? false;
+                  if(!verified) {
+                    setError('Error', 'Email not verified');
+                    return;
+                  }
                   print('verified -> $verified');
                   print('TODO: to main app');
                 },

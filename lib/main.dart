@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory/error_message_dialog.dart';
 import 'package:inventory/firebase_options.dart';
-import 'package:inventory/views/error_message.dart';
 import 'package:inventory/views/home/home_view.dart';
 import 'package:inventory/views/home/login_register_view.dart';
 
@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/login': (context) => const LoginAndRegisterView(isLogin: true),
         '/register': (context) => const LoginAndRegisterView(isLogin: false),
+        '/login': (context) => const LoginAndRegisterView(isLogin: true),      
       },
       home: FutureBuilder(
         future: Firebase.initializeApp(
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasError) {
-            return ErrorMessage(
+            return ErrorMessageDialog(
               title: 'Error',
               message: 'Could not connect to Firebase',
               icon: Icons.error,

@@ -1,16 +1,29 @@
-# inventory
+# Inventory
 
-A new Flutter project.
+## Introduction
+Welcome to the Inventory! This is a project aimed at helping you keep track of where your objects are located within your home. Whether it's that favorite book you can never seem to find or that tool you always misplace, this app aims to make locating your belongings a breeze.
 
-## Getting Started
+**Please Note**: This project is currently under development.
 
-This project is a starting point for a Flutter application.
+## Installation
+To get started with the Home Inventory App, follow these steps:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. **Clone the repository:**  
+   ```bash
+   git clone https://github.com/lakescorp/inventory.git
+    ```
+2. **Navigate to the project directory:**
+   ```bash
+   cd inventory
+    ```
+3. **Install dependencies:**
+   ```bash
+   flutter pub get
+    ```
+4. **Set up Firebase:**
+Create a Firebase project in the Firebase Console.
+Follow this official guide to [Add Firebase to your Flutter app](https://firebase.flutter.dev/docs/overview). Or see the video tutorial [here](https://www.youtube.com/watch?v=FkFvQ0SaT1I).
+5. **Run the app:**
+   ```bash
+   flutter run
+    ```
