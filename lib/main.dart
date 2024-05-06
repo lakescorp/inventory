@@ -4,6 +4,7 @@ import 'package:inventory/error_message_dialog.dart';
 import 'package:inventory/firebase_options.dart';
 import 'package:inventory/views/home/home_view.dart';
 import 'package:inventory/views/home/login_register_view.dart';
+import 'package:inventory/views/main_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,13 +19,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData.dark(useMaterial3: true).copyWith(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.light,
+          colorSchemeSeed: Colors.deepPurple),
+      darkTheme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.dark,
+          colorSchemeSeed: Colors.deepPurple),
       initialRoute: '/',
       routes: {
         '/register': (context) => const LoginAndRegisterView(isLogin: false),
-        '/login': (context) => const LoginAndRegisterView(isLogin: true),      
+        '/login': (context) => const LoginAndRegisterView(isLogin: true),
+        '/home': (context) => const MainView(),
       },
       home: FutureBuilder(
         future: Firebase.initializeApp(
@@ -43,7 +50,8 @@ class MyApp extends StatelessWidget {
               icon: Icons.error,
               onFirstButton: () {
                 // Handle retry restart app
-                Navigator.pushNamedAndRemoveUntil(context, '/', ((route) => false));
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/', ((route) => false));
               },
               firstButtonName: 'Retry',
             );

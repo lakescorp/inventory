@@ -40,8 +40,8 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       setError('Error', 'Email not verified');
       return;
     }
-    print('verified -> $verified');
-    print('TODO: to main app');
+    if (!mounted) return;
+    Navigator.pushNamedAndRemoveUntil(context, '/', ((route) => false));
   }
 
   @override
@@ -53,12 +53,10 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
-          color: Colors.white,
         ),
         title: const Text(
           "Verify email",
           style: TextStyle(
-            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 36,
           ),
@@ -82,7 +80,6 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               "Your email is not\nverified",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 32,
               ),
@@ -93,7 +90,6 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             const Text(
               "For added account security, you will need to verify your email.\nTo verify it, click on the button so that we can send you an email with a link to verify it.",
               style: TextStyle(
-                color: Colors.white,
                 fontWeight: FontWeight.normal,
                 fontSize: 20,
               ),
@@ -101,23 +97,29 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             const SizedBox(
               height: 20,
             ),
-            FilledButton.tonal(
-                onPressed: onSendEmail,
-                child: const Text('Send email',
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF381E72)))),
+            FilledButton(
+              onPressed: onSendEmail,
+              child: const Text(
+                'Send email',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             const SizedBox(
               height: 5,
             ),
             TextButton(
-                onPressed: onAlreadyVerified,
-                child: const Text('Already verified',
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.white))),
+              onPressed: onAlreadyVerified,
+              child: Text(
+                'Already verified',
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.normal,
+                    color: Theme.of(context).colorScheme.secondary),
+              ),
+            ),
           ],
         ),
       )),
