@@ -81,8 +81,12 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
 
   void homeOrVerifyEmail() {
     final user = FirebaseAuth.instance.currentUser;
+    if(user == null) {
+      setError('Error', 'User not found');
+      return;
+    }
 
-    if (user?.emailVerified ?? false) {
+    if (user.emailVerified) {
       print("TODO: lAUNCH APP");
     } else {
       Navigator.push(context,
@@ -103,16 +107,15 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
           onPressed: () => Navigator.pop(context),
           color: Colors.white,
         ),
-        flexibleSpace: Center(
-          child: Text(
-            text,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 36,
-            ),
+        title: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 36,
           ),
         ),
+        centerTitle: true,
       ),
       body: Stack(
         children: [

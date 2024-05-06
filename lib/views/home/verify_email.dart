@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/error_message_dialog.dart';
 
-
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
 
@@ -11,9 +10,6 @@ class VerifyEmailView extends StatefulWidget {
 }
 
 class _VerifyEmailViewState extends State<VerifyEmailView> {
-
-
-
   void setError(String title, String message) {
     showDialog(
       context: context,
@@ -28,7 +24,24 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   }
 
   void hideError() {
-      Navigator.of(context).pop();
+    Navigator.of(context).pop();
+  }
+
+  void onSendEmail() async {
+    final user = FirebaseAuth.instance.currentUser;
+    await user?.sendEmailVerification();
+  }
+
+  void onAlreadyVerified() async {
+    await FirebaseAuth.instance.currentUser?.reload();
+    final user = FirebaseAuth.instance.currentUser;
+    final verified = user?.emailVerified ?? false;
+    if (!verified) {
+      setError('Error', 'Email not verified');
+      return;
+    }
+    print('verified -> $verified');
+    print('TODO: to main app');
   }
 
   @override
@@ -42,20 +55,19 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
           onPressed: () => Navigator.pop(context),
           color: Colors.white,
         ),
-        flexibleSpace: const Center(
-          child: Text(
-            "Verify email",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 36,
-            ),
+        title: const Text(
+          "Verify email",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 36,
           ),
         ),
+        centerTitle: true,
       ),
       body: Center(
           child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -79,41 +91,28 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               height: 20,
             ),
             const Text(
-              "For added account security, you will need to verify your email.\n\nTo verify it, click on the button so that we can send you an email with a link to verify it.",
+              "For added account security, you will need to verify your email.\nTo verify it, click on the button so that we can send you an email with a link to verify it.",
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.normal,
-                fontSize: 24,
+                fontSize: 20,
               ),
             ),
             const SizedBox(
               height: 20,
             ),
             FilledButton.tonal(
-                onPressed: () async {
-                  final user = FirebaseAuth.instance.currentUser;
-                  await user?.sendEmailVerification();
-                },
+                onPressed: onSendEmail,
                 child: const Text('Send email',
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF381E72)))),
             const SizedBox(
-              height: 20,
+              height: 5,
             ),
             TextButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.currentUser?.reload();
-                  final user = FirebaseAuth.instance.currentUser;
-                  final verified = user?.emailVerified ?? false;
-                  if(!verified) {
-                    setError('Error', 'Email not verified');
-                    return;
-                  }
-                  print('verified -> $verified');
-                  print('TODO: to main app');
-                },
+                onPressed: onAlreadyVerified,
                 child: const Text('Already verified',
                     style: TextStyle(
                         fontSize: 24,
