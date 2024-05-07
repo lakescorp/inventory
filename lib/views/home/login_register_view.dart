@@ -67,7 +67,8 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
       homeOrVerifyEmail();
     } on FirebaseAuthException catch (e) {
       final text = widget.isLogin ? 'log in' : 'sign up';
-      setError('Error on $text', e.message!);
+      final errorMessage = e.message ?? e.toString();
+      setError('Error on $text', errorMessage);
     }
   }
 
