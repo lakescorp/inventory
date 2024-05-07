@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory/constants/routes.dart';
 import 'package:inventory/message_dialog.dart';
 import 'package:inventory/firebase_options.dart';
 import 'package:inventory/views/favourites_view.dart';
@@ -31,10 +32,10 @@ class MyApp extends StatelessWidget {
           colorSchemeSeed: Colors.deepPurple),
       initialRoute: '/',
       routes: {
-        '/register': (context) => const LoginAndRegisterView(isLogin: false),
-        '/login': (context) => const LoginAndRegisterView(isLogin: true),
-        '/home': (context) => const MainView(),
-        '/favourites': (context) => const FavouritesView(),
+        registerRoute: (context) => const LoginAndRegisterView(isLogin: false),
+        loginRoute: (context) => const LoginAndRegisterView(isLogin: true),
+        homeRoute: (context) => const MainView(),
+        favouritesRoute: (context) => const FavouritesView(),
       },
       home: FutureBuilder(
         future: Firebase.initializeApp(

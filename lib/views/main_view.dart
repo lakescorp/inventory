@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:inventory/constants/routes.dart';
 import 'package:inventory/views/storage_view.dart';
 import 'package:inventory/views/user_settings.dart';
+import 'dart:developer' as Logger show log; // Use Logger.log() instead of print()
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -76,7 +78,7 @@ class _MainViewState extends State<MainView> {
                       )),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/favourites');
+                      Navigator.pushNamed(context, favouritesRoute);
                     },
                     child: Text(
                       'See more...',
@@ -106,7 +108,7 @@ class _MainViewState extends State<MainView> {
                       )),
                   TextButton(
                     onPressed: () {
-                      print('TODO: See more...');
+                      Logger.log('TODO: See more...');
                       Navigator.push(context, MaterialPageRoute(builder: (context) => StorageView()));
                     },
                     child: Text(
@@ -137,7 +139,7 @@ class _MainViewState extends State<MainView> {
                       )),
                   TextButton(
                     onPressed: () {
-                      print('TODO: See more...');
+                      Logger.log('TODO: See more...');
                       Navigator.push(context, MaterialPageRoute(builder: (context) => UserSettingsView()));
                     },
                     child: Text(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:inventory/constants/routes.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -15,10 +16,10 @@ class _HomeViewState extends State<HomeView> {
     setState(() {
       switch (value) {
         case 1:
-          Navigator.pushNamed(context, '/register');
+          Navigator.pushNamed(context, registerRoute);
           break;
         case 2:
-          Navigator.pushNamed(context, '/login');
+          Navigator.pushNamed(context, loginRoute);
           break;
         default:
           Navigator.popUntil(context, ModalRoute.withName('/'));

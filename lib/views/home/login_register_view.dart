@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory/constants/routes.dart';
 import 'package:inventory/message_dialog.dart';
 import 'package:inventory/views/home/verify_email.dart';
 
@@ -54,29 +55,20 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
     final email = _email.text;
     final password = _password.text;
 
-    var success = false;
-
-    if (!widget.isLogin) {
-      try {
+    try {
+      if (!widget.isLogin) {
         await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
-        // print(userCredential);
-        success = true;
-      } on FirebaseAuthException catch (e) {
-        setError('Error on register', e.message!);
-      }
-    } else {
-      try {
+      } else {
         await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
-        // print(userCredential);
-        success = true;
-      } on FirebaseAuthException catch (e) {
-        setError('Error on log in', e.message!);
       }
+      // print(userCredential);
+      homeOrVerifyEmail();
+    } on FirebaseAuthException catch (e) {
+      final text = widget.isLogin ? 'log in' : 'sign up';
+      setError('Error on $text', e.message!);
     }
-
-    if (success) homeOrVerifyEmail();
   }
 
   void homeOrVerifyEmail() {
@@ -87,7 +79,7 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
     }
 
     if (user.emailVerified) {
-      Navigator.pushNamedAndRemoveUntil(context, '/home', ((route) => false));
+      Navigator.pushNamedAndRemoveUntil(context, homeRoute, ((route) => false));
     } else {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const VerifyEmailView()));
@@ -127,7 +119,10 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
                   borderRadius: BorderRadius.circular(50.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.3),
                       blurRadius: 10.0,
                       spreadRadius: 1.0,
                       offset: const Offset(0, 6),
@@ -150,9 +145,12 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.background,
                   borderRadius: BorderRadius.circular(50.0),
-                  boxShadow:  [
+                  boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.3),
                       blurRadius: 10.0,
                       spreadRadius: 1.0,
                       offset: const Offset(0, 6),
