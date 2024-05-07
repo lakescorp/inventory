@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/constants/routes.dart';
 import 'package:inventory/message_dialog.dart';
-import 'package:inventory/views/home/verify_email.dart';
 
 class LoginAndRegisterView extends StatefulWidget {
   const LoginAndRegisterView({
@@ -69,6 +68,8 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
       final text = widget.isLogin ? 'log in' : 'sign up';
       final errorMessage = e.message ?? e.toString();
       setError('Error on $text', errorMessage);
+    } catch (e) {
+      setError('Error', e.toString());
     }
   }
 
@@ -82,8 +83,7 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
     if (user.emailVerified) {
       Navigator.pushNamedAndRemoveUntil(context, homeRoute, ((route) => false));
     } else {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const VerifyEmailView()));
+      Navigator.pushNamed(context, verifyEmailRoute);
     }
   }
 

@@ -27,9 +27,13 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
     Navigator.of(context).pop();
   }
 
-  void onSendEmail() async {
-    final user = FirebaseAuth.instance.currentUser;
-    await user?.sendEmailVerification();
+  void sendEmail() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      await user?.sendEmailVerification();
+    } catch (e) {
+      setError('Error sending email', e.toString());
+    }
   }
 
   void onAlreadyVerified() async {
@@ -46,6 +50,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
 
   @override
   Widget build(BuildContext context) {
+    sendEmail();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent, // Transparent background
@@ -77,7 +82,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               height: 20,
             ),
             const Text(
-              "Your email is not\nverified",
+              "Verify your email!",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -88,7 +93,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               height: 20,
             ),
             const Text(
-              "For added account security, you will need to verify your email.\nTo verify it, click on the button so that we can send you an email with a link to verify it.",
+              "For added account security, you will need to verify your email.\nWe have sent you an email with a verification link. Click on the link and come back after you have verified and click on \"Already verified\".",
               style: TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 20,
@@ -98,26 +103,26 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               height: 20,
             ),
             FilledButton(
-              onPressed: onSendEmail,
+              onPressed: onAlreadyVerified,
               child: const Text(
-                'Send email',
+                'Already verified',
                 style: TextStyle(
                   fontSize: 24,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.normal,
                 ),
               ),
-            ),
+            ),            
             const SizedBox(
               height: 5,
             ),
             TextButton(
-              onPressed: onAlreadyVerified,
-              child: Text(
-                'Already verified',
+              onPressed: sendEmail,
+              child: const Text(
+                'Send email again',
                 style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.normal,
-                    color: Theme.of(context).colorScheme.secondary),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

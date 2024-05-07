@@ -7,6 +7,7 @@ import 'package:inventory/firebase_options.dart';
 import 'package:inventory/views/favourites_view.dart';
 import 'package:inventory/views/home/home_view.dart';
 import 'package:inventory/views/home/login_register_view.dart';
+import 'package:inventory/views/home/verify_email.dart';
 import 'package:inventory/views/main_view.dart';
 
 void main() {
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
       routes: {
         registerRoute: (context) => const LoginAndRegisterView(isLogin: false),
         loginRoute: (context) => const LoginAndRegisterView(isLogin: true),
+        verifyEmailRoute: (context) => const VerifyEmailView(),
         homeRoute: (context) => const MainView(),
         favouritesRoute: (context) => const FavouritesView(),
       },
@@ -60,10 +62,16 @@ class MyApp extends StatelessWidget {
               firstButtonName: 'Retry',
             );
           }
-          if (FirebaseAuth.instance.currentUser != null){
-            return const MainView();
-          }
-          return const HomeView();
+
+          return FutureBuilder(
+            future: FirebaseAuth.instance.currentUser?.reload(),
+            builder: (context, snapshot) {
+              if (FirebaseAuth.instance.currentUser != null) {
+                return const MainView();
+              }
+              return const HomeView();
+            },
+          );
         },
       ),
     );
