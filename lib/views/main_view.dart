@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:inventory/views/storage_view.dart';
+import 'package:inventory/views/user_settings.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -30,7 +32,7 @@ class _MainViewState extends State<MainView> {
       appBar: AppBar(
         clipBehavior: Clip.none, // Do not clip shadow
         scrolledUnderElevation: 0.0, // Do not change color on scroll
-        backgroundColor: Colors.transparent, 
+        backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         title: Container(
@@ -59,8 +61,8 @@ class _MainViewState extends State<MainView> {
           ),
         ),
       ),
-      body: ListView(
-        children: [Padding(
+      body: ListView(children: [
+        Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
@@ -73,7 +75,9 @@ class _MainViewState extends State<MainView> {
                         fontSize: 32,
                       )),
                   TextButton(
-                    onPressed: () {print('TODO: See more...');},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/favourites');
+                    },
                     child: Text(
                       'See more...',
                       style: TextStyle(
@@ -101,7 +105,10 @@ class _MainViewState extends State<MainView> {
                         fontSize: 32,
                       )),
                   TextButton(
-                    onPressed: () {print('TODO: See more...');},
+                    onPressed: () {
+                      print('TODO: See more...');
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => StorageView()));
+                    },
                     child: Text(
                       'See more...',
                       style: TextStyle(
@@ -129,7 +136,10 @@ class _MainViewState extends State<MainView> {
                         fontSize: 32,
                       )),
                   TextButton(
-                    onPressed: () {print('TODO: See more...');},
+                    onPressed: () {
+                      print('TODO: See more...');
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => UserSettingsView()));
+                    },
                     child: Text(
                       'See more...',
                       style: TextStyle(
@@ -150,8 +160,8 @@ class _MainViewState extends State<MainView> {
               ),
             ],
           ),
-        ),]
-      ),
+        ),
+      ]),
       floatingActionButton: SpeedDial(
         icon: Icons.add,
         activeIcon: Icons.close,

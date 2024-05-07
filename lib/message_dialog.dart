@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ErrorMessageDialog extends StatelessWidget {
+class MessageDialog extends StatelessWidget {
   final String title;
   final String message;
   final String firstButtonName;
@@ -9,7 +9,7 @@ class ErrorMessageDialog extends StatelessWidget {
   final VoidCallback onFirstButton;
   final VoidCallback? onSecondButton;
 
-  const ErrorMessageDialog({
+  const MessageDialog({
     super.key,
     required this.title,
     required this.message,
@@ -26,7 +26,6 @@ class ErrorMessageDialog extends StatelessWidget {
       title: Icon(
         icon,
         size: 50,
-        color: Colors.white,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -34,7 +33,6 @@ class ErrorMessageDialog extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -43,7 +41,6 @@ class ErrorMessageDialog extends StatelessWidget {
           Text(
             message,
             style: const TextStyle(
-              color: Colors.white,
               fontSize: 16,
             ),
           ),
@@ -51,14 +48,15 @@ class ErrorMessageDialog extends StatelessWidget {
       ),
       actions: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          
           children: [
             ElevatedButton(
               onPressed: onFirstButton,
               child: Text(firstButtonName),
             ),
             if (secondButtonName != null)
-              TextButton(
+              ElevatedButton(
                 onPressed: onSecondButton,
                 child: Text(secondButtonName!),
               ),

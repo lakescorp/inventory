@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory/error_message_dialog.dart';
+import 'package:inventory/message_dialog.dart';
 import 'package:inventory/views/home/verify_email.dart';
 
 class LoginAndRegisterView extends StatefulWidget {
@@ -36,7 +36,7 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
   void setError(String title, String message) {
     showDialog(
       context: context,
-      builder: (context) => ErrorMessageDialog(
+      builder: (context) => MessageDialog(
         title: title,
         message: message,
         icon: Icons.error,

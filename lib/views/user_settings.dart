@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory/message_dialog.dart';
 
-class UserSettingsPage extends StatelessWidget {
-  const UserSettingsPage({super.key});
+class UserSettingsView extends StatelessWidget {
+  const UserSettingsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,19 +14,41 @@ class UserSettingsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
-          color: Colors.white,
         ),
+        centerTitle: true,
         title: const Text(
           'Settings',
           style: TextStyle(
-            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 36,
           ),
         ),
       ),
       body: Center(
-        child: TextButton(onPressed: () {}, child: const Text('jesus'),),
+        child: ElevatedButton(
+          onPressed: () {
+            // Log out
+            showDialog(
+              context: context,
+              builder: (context) => MessageDialog(
+                title: 'Log out',
+                message: 'Are you sure you want to log out?',
+                icon: Icons.logout,
+                onFirstButton: () {
+                   Navigator.pop(context);
+                },
+                firstButtonName: 'Stay in',
+                onSecondButton: () async {                
+                  Navigator.pushNamedAndRemoveUntil(context, '/', ((route) => false));
+                  await FirebaseAuth.instance.signOut();
+                },
+                secondButtonName: 'Log out',
+              ),
+            );
+            
+          },
+          child: const Text('Log out'),
+        ),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory/error_message_dialog.dart';
+import 'package:inventory/message_dialog.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
@@ -13,7 +13,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   void setError(String title, String message) {
     showDialog(
       context: context,
-      builder: (context) => ErrorMessageDialog(
+      builder: (context) => MessageDialog(
         title: title,
         message: message,
         icon: Icons.email,
