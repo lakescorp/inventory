@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/message_dialog.dart';
+import 'package:inventory/services/auth/auth_exceptions.dart';
+import 'package:inventory/services/auth/auth_service.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
@@ -29,18 +30,18 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
 
   void sendEmail() async {
     try {
-      final user = FirebaseAuth.instance.currentUser;
-      await user?.sendEmailVerification();
-    } catch (e) {
+      await AuthService.firebase().sendEmailVerification();
+    } on UserNotLoggedInException catch (e){
+      setError('Error sending email', e.message);
+    }
+    catch (e) {
       setError('Error sending email', e.toString());
     }
   }
 
   void onAlreadyVerified() async {
-    await FirebaseAuth.instance.currentUser?.reload();
-    final user = FirebaseAuth.instance.currentUser;
-    final verified = user?.emailVerified ?? false;
-    if (!verified) {
+    final user = await AuthService.firebase().updateCurrentUser();
+    if (!user.isEmailVerified) {
       setError('Error', 'Email not verified');
       return;
     }

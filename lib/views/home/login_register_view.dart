@@ -1,7 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/constants/routes.dart';
 import 'package:inventory/message_dialog.dart';
+import 'package:inventory/services/auth/auth_exceptions.dart';
+import 'package:inventory/services/auth/auth_service.dart';
 
 class LoginAndRegisterView extends StatefulWidget {
   const LoginAndRegisterView({
@@ -56,31 +57,28 @@ class _LoginAndRegisterViewState extends State<LoginAndRegisterView> {
 
     try {
       if (!widget.isLogin) {
-        await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password);
+        await AuthService.firebase().createUser(email: email, password: password);
       } else {
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
+        await AuthService.firebase().logIn(email: email, password: password);
       }
       // print(userCredential);
       homeOrVerifyEmail();
-    } on FirebaseAuthException catch (e) {
+    } on CreateUserException catch (e) {
       final text = widget.isLogin ? 'log in' : 'sign up';
-      final errorMessage = e.message ?? e.toString();
-      setError('Error on $text', errorMessage);
+      setError('Error on $text', e.message);
     } catch (e) {
       setError('Error', e.toString());
     }
   }
 
   void homeOrVerifyEmail() {
-    final user = FirebaseAuth.instance.currentUser;
+    final user = AuthService.firebase().currentUser;
     if (user == null) {
       setError('Error', 'User not found');
       return;
     }
 
-    if (user.emailVerified) {
+    if (user.isEmailVerified) {
       Navigator.pushNamedAndRemoveUntil(context, homeRoute, ((route) => false));
     } else {
       Navigator.pushNamed(context, verifyEmailRoute);

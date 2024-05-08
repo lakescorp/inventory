@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/message_dialog.dart';
+import 'package:inventory/services/auth/auth_service.dart';
 
 class UserSettingsView extends StatelessWidget {
   const UserSettingsView({super.key});
@@ -40,7 +40,7 @@ class UserSettingsView extends StatelessWidget {
                 firstButtonName: 'Stay in',
                 onSecondButton: () async {                
                   Navigator.pushNamedAndRemoveUntil(context, '/', ((route) => false));
-                  await FirebaseAuth.instance.signOut();
+                  await AuthService.firebase().logOut();
                 },
                 secondButtonName: 'Log out',
               ),

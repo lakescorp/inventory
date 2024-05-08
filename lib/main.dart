@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/constants/routes.dart';
 import 'package:inventory/message_dialog.dart';
-import 'package:inventory/firebase_options.dart';
+import 'package:inventory/services/auth/auth_service.dart';
 import 'package:inventory/views/favourites_view.dart';
 import 'package:inventory/views/home/home_view.dart';
 import 'package:inventory/views/home/login_register_view.dart';
@@ -40,8 +38,7 @@ class MyApp extends StatelessWidget {
         favouritesRoute: (context) => const FavouritesView(),
       },
       home: FutureBuilder(
-        future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform),
+        future: AuthService.firebase().initialize(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Scaffold(
@@ -64,9 +61,9 @@ class MyApp extends StatelessWidget {
           }
 
           return FutureBuilder(
-            future: FirebaseAuth.instance.currentUser?.reload(),
+            future: AuthService.firebase().updateCurrentUser(),
             builder: (context, snapshot) {
-              if (FirebaseAuth.instance.currentUser != null) {
+              if (AuthService.firebase().currentUser != null) {
                 return const MainView();
               }
               return const HomeView();
